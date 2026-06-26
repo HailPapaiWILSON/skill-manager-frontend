@@ -9,7 +9,8 @@ import TeamDetail from "./pages/Teams/TeamDetail";
 import ProjectList from "./pages/Projects/ProjectList";
 import ProjectDetail from "./pages/Projects/ProjectDetail";
 import Profile from "./pages/Profile";
-import AdminLayout from "./pages/Admin";
+import AdminLayout from "./pages/Admin/index";
+import Cadastro from "./pages/Cadastro";
 
 // Lazy-loaded components
 const Analytics = lazy(() => import("./pages/Teams/TeamDetail/Analytics"));
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/cadastro",
+    element: <Cadastro />,
   },
   {
     path: "/",

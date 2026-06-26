@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect, useContext } from "react";
-
 import { login as apiLogin } from "../api/auth";
 
 const AuthContext = createContext(null);
@@ -10,8 +9,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-
-    if (!storedUser) {
+    if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
       } catch {
@@ -24,12 +22,9 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, senha) => {
     const response = await apiLogin({ email, senha });
     const { usuarioSemSenha, token } = response.data;
-
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(usuarioSemSenha));
-
     setUser(usuarioSemSenha);
-
     return usuarioSemSenha;
   };
 
@@ -48,4 +43,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within AuthProvider");
+  }
+  return context;
 };

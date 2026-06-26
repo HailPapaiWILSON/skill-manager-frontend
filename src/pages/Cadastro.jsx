@@ -1,17 +1,17 @@
-// Login.jsx
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import { Link, useNavigate } from "react-router-dom";
 import { useNotification } from "../hooks/useNotification";
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
-import styles from "./Login.module.css";
+import { register } from "../api/auth";
+import styles from "./Cadastro.module.css";
 
-const Login = () => {
+const Cadastro = () => {
+  const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [codigoIngresso, setCodigoIngresso] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
   const { showToast } = useNotification();
   const navigate = useNavigate();
 
@@ -19,11 +19,11 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await login(email, senha);
-      showToast("Login realizado com sucesso!", "success");
-      navigate("/teams");
+      await register({ nome, email, senha, codigoIngresso });
+      showToast("Cadastro realizado! Faça login.", "success");
+      navigate("/login");
     } catch (error) {
-      const msg = error.response?.data?.message || "Erro ao fazer login";
+      const msg = error.response?.data?.message || "Erro ao cadastrar";
       showToast(msg, "error");
     } finally {
       setLoading(false);
@@ -33,8 +33,15 @@ const Login = () => {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <h1>Login</h1>
+        <h1>Cadastro</h1>
         <form onSubmit={handleSubmit}>
+          <Input
+            label="Nome"
+            name="nome"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            required
+          />
           <Input
             label="E-mail"
             type="email"
@@ -51,17 +58,24 @@ const Login = () => {
             onChange={(e) => setSenha(e.target.value)}
             required
           />
+          <Input
+            label="Código de Ingresso da Equipe"
+            name="codigoIngresso"
+            value={codigoIngresso}
+            onChange={(e) => setCodigoIngresso(e.target.value)}
+            required
+            placeholder="Ex: ABC123"
+          />
           <Button type="submit" disabled={loading} className={styles.submit}>
-            {loading ? "Entrando..." : "Entrar"}
+            {loading ? "Cadastrando..." : "Cadastrar"}
           </Button>
         </form>
-
-        <p className={styles.registerLink}>
-          Não tem conta? <Link to="/cadastro">Cadastre-se</Link>
+        <p className={styles.loginLink}>
+          Já tem conta? <Link to="/login">Faça login</Link>
         </p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Cadastro;
