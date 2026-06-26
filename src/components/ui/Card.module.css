@@ -1,0 +1,7 @@
+/* Card.module.css */
+.card {
+  background-color: var(--color-surface);
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+}

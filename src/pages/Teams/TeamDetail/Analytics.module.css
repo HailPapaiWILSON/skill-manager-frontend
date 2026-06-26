@@ -1,0 +1,20 @@
+/* Analytics.module.css */
+.heatmapWrapper {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+.heatmap {
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  width: 100%;
+}
+.heatmap th,
+.heatmap td {
+  border: 1px solid var(--color-border);
+  padding: 0.5rem;
+  text-align: center;
+}
+.heatmap th {
+  background-color: var(--color-bg);
+  font-weight: 600;
+}

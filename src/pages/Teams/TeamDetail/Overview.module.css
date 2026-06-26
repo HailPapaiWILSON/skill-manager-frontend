@@ -1,0 +1,12 @@
+/* Overview.module.css */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+.code {
+  font-family: monospace;
+  background-color: var(--color-bg);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}

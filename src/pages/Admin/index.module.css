@@ -1,0 +1,25 @@
+/* index.module.css */
+.subNav {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+}
+.subNav a {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  color: var(--color-text-light);
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+.subNav a:hover {
+  background-color: var(--color-bg);
+}
+.subNav a.active {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+.content {
+  margin-top: 1rem;
+}

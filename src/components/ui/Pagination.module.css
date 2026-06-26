@@ -1,0 +1,27 @@
+/* Pagination.module.css */
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+.pages {
+  display: flex;
+  gap: 0.25rem;
+}
+.page {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.25rem;
+  background: var(--color-surface);
+  cursor: pointer;
+}
+.page.active {
+  background-color: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+.page:hover:not(.active) {
+  background-color: var(--color-bg);
+}

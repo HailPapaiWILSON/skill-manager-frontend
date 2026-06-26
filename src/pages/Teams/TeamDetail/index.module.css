@@ -1,0 +1,11 @@
+/* index.module.css */
+.title {
+  margin-bottom: 0.25rem;
+}
+.desc {
+  color: var(--color-text-light);
+  margin-bottom: 1.5rem;
+}
+.content {
+  margin-top: 1.5rem;
+}

@@ -1,0 +1,10 @@
+/* RootLayout.module.css */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+.main {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+}

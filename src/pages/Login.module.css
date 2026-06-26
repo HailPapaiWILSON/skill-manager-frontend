@@ -1,0 +1,24 @@
+/* Login.module.css */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+.card {
+  background-color: var(--color-surface);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 400px;
+}
+.card h1 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.submit {
+  width: 100%;
+  margin-top: 0.5rem;
+}
