@@ -1,55 +1,48 @@
 /* Sidebar.module.css */
 .sidebar {
-  width: 240px;
-  background-color: var(--color-surface);
-  border-right: 1px solid var(--color-border);
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem 0;
+    background-color: #f7fafc;
+    border-right: 1px solid #d5dce4;
+}
+
+.nav a.active {
+    background-color: #e2e8f0;  /* Cool fog */
+    color: #4f74a8;
+}
+
+.logout {
+    color: #c87870;  /* Keep a hint of warmth for danger */
 }
 .logo {
-  font-size: 1.25rem;
-  font-weight: 700;
-  padding: 0 1.5rem;
-  margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    padding: 0 1.5rem;
+    margin-bottom: 1.5rem;
 }
 .nav {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  gap: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.25rem;
 }
 .nav a,
 .logout {
-  padding: 0.5rem 1.5rem;
-  border: none;
-  background: none;
-  text-align: left;
-  font-size: 1rem;
-  color: var(--color-text-light);
-  transition:
-    background-color 0.2s,
-    color 0.2s;
-  cursor: pointer;
-  text-decoration: none;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    background: none;
+    text-align: left;
+    font-size: 1rem;
+    color: var(--color-text-light);
+    transition:
+        background-color 0.2s,
+        color 0.2s;
+    cursor: pointer;
+    text-decoration: none;
 }
 .nav a:hover,
 .logout:hover {
-  background-color: var(--color-bg);
-  color: var(--color-text);
-}
-.nav a.active {
-  background-color: #e0e7ff;
-  color: var(--color-primary);
-  font-weight: 500;
-}
-.logout {
-  margin-top: auto;
-  color: var(--color-error);
+    background-color: var(--color-bg);
+    color: var(--color-text);
 }
 .logout:hover {
-  background-color: #fee2e2;
+    background-color: #f5e8e5;
 }

@@ -460,19 +460,38 @@
     font-weight: 600;
 }
 
-.levelDot.senior {
-    background-color: #dcfce7;
-    color: #166534;
+.levelsenior {
+    background-color: #dce8e0;  /* Cool sage */
+    color: #2d5a4a;
+}
+.levelpleno {
+    background-color: #e8e0cc;  /* Cool cream */
+    color: #7a6a3a;
+}
+.leveljunior {
+    background-color: #e0e4e8;  /* Cool fog */
+    color: #3a4a5a;
 }
 
-.levelDot.pleno {
-    background-color: #fef3c7;
-    color: #92400e;
+/* Status indicators - Pastel */
+.statusGreen {
+    color: #5a8a72;
+}
+.statusYellow {
+    color: #b8a050;
+}
+.statusRed {
+    color: #c87870;
 }
 
-.levelDot.junior {
-    background-color: #e0e7ff;
-    color: #1e40af;
+.progressBar.statusGreen {
+    background-color: #a8c8b8;
+}
+.progressBar.statusYellow {
+    background-color: #d8c888;
+}
+.progressBar.statusRed {
+    background-color: #e0a8a0;
 }
 
 /* ======================================== */

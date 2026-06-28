@@ -28,11 +28,6 @@
     cursor: text;
 }
 
-.inputWrapper.focused {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
 .selectedSkills {
     display: flex;
     flex-wrap: wrap;
@@ -40,17 +35,20 @@
     gap: 0.25rem;
 }
 
+.input:focus {
+    border-color: #6b8fc9;
+    box-shadow: 0 0 0 3px rgba(107, 143, 201, 0.15);
+}
+
 .selectedSkill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    background-color: #e0e7ff;
-    color: #1e40af;
-    padding: 0.125rem 0.5rem;
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    animation: slideIn 0.2s ease;
+    background-color: #e2e8f0;
+    color: #2d3748;
+}
+
+.skillOption.selected {
+    background-color: #e8ecf5;
+    border-color: #7b9cd6;
+    color: #4a5a7a;
 }
 
 @keyframes slideIn {

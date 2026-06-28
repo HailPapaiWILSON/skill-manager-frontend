@@ -9,7 +9,7 @@ export const Sidebar = () => {
 
   return (
     <aside className={styles.sidebar}>
-      <div className={styles.logo}>Team Dashboard</div>
+      <div className={styles.logo}>Skill Manager</div>
       <nav className={styles.nav}>
         <NavLink
           to="/teams"

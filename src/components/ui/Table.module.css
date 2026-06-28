@@ -1,19 +1,19 @@
 /* Table.module.css */
 .table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.875rem;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
 }
 .table th {
-  text-align: left;
-  padding: 0.5rem 0.75rem;
-  border-bottom: 2px solid var(--color-border);
-  font-weight: 600;
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid var(--color-border);
+    font-weight: 600;
 }
 .table td {
-  padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid var(--color-border);
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--color-border);
 }
 .table tr:hover {
-  background-color: #f1f5f9;
+    background-color: #e8edf3;  /* Cool hover */
 }

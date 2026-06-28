@@ -152,7 +152,7 @@ const Analytics = ({ teamId }) => {
       {/* 1. TERMÔMETRO DO TIME */}
       {/* ======================================== */}
       <Card className={styles.section}>
-        <h3>📊 Termômetro do Time</h3>
+        <h3>Termômetro do Time</h3>
         {thermometerData.cobertura === null ? (
           <p className={styles.noData}>
             {thermometerData.mensagem || "Equipe não possui projetos ativos"}
@@ -204,12 +204,12 @@ const Analytics = ({ teamId }) => {
       {/* 2. LISTA DO QUE FALTA */}
       {/* ======================================== */}
       <Card className={styles.section}>
-        <h3>📋 Lista do que Falta</h3>
+        <h3>Lista do que Falta</h3>
         {missingSkillsData.mensagem ? (
           <p className={styles.noData}>{missingSkillsData.mensagem}</p>
         ) : missingSkillsData.total === 0 ? (
           <p className={styles.successMessage}>
-            ✅ Todas as skills necessárias estão cobertas!
+            Todas as skills necessárias estão cobertas!
           </p>
         ) : (
           <>
@@ -311,11 +311,11 @@ const Analytics = ({ teamId }) => {
       {/* 4. PROJETOS EM RISCO */}
       {/* ======================================== */}
       <Card className={styles.section}>
-        <h3>⚠️ Projetos em Risco</h3>
+        <h3>Projetos em Risco</h3>
         {atRiskProjectsData.mensagem ? (
           <p className={styles.noData}>{atRiskProjectsData.mensagem}</p>
         ) : atRiskProjectsData.total === 0 ? (
-          <p className={styles.successMessage}>✅ Nenhum projeto em risco!</p>
+          <p className={styles.successMessage}>Nenhum projeto em risco!</p>
         ) : (
           <>
             <p className={styles.riskCount}>
@@ -355,7 +355,7 @@ const Analytics = ({ teamId }) => {
       {/* 5. O QUE O TIME MAIS FAZ */}
       {/* ======================================== */}
       <Card className={styles.section}>
-        <h3>🏆 O que o Time Mais Faz</h3>
+        <h3>O que o Time Mais Faz</h3>
         {topSkillsData.mensagem ? (
           <p className={styles.noData}>{topSkillsData.mensagem}</p>
         ) : topSkillsData.topSkills?.length === 0 ? (
@@ -401,7 +401,7 @@ const Analytics = ({ teamId }) => {
       {/* 6. RANKING DE POLIVALÊNCIA */}
       {/* ======================================== */}
       <Card className={styles.section}>
-        <h3>🌟 Ranking de Polivalência</h3>
+        <h3>Ranking de Skills</h3>
         {versatilityRankingData.mensagem ? (
           <p className={styles.noData}>{versatilityRankingData.mensagem}</p>
         ) : versatilityRankingData.ranking?.length === 0 ? (
