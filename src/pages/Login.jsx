@@ -1,15 +1,14 @@
-// Login.jsx
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
-import { useNotification } from "../hooks/useNotification";
-import { Input } from "../components/ui/Input";
-import { Button } from "../components/ui/Button";
-import styles from "./Login.module.css";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import { useNotification } from '../hooks/useNotification';
+import { Input } from '../components/ui/Input';
+import { Button } from '../components/ui/Button';
+import styles from './Login.module.css';
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const { showToast } = useNotification();
@@ -20,11 +19,12 @@ const Login = () => {
     setLoading(true);
     try {
       await login(email, senha);
-      showToast("Login realizado com sucesso!", "success");
-      navigate("/teams");
+      showToast('Login realizado com sucesso!', 'success');
+      navigate('/teams');
     } catch (error) {
-      const msg = error.response?.data?.message || "Erro ao fazer login";
-      showToast(msg, "error");
+      console.error('Erro no login:', error);
+      const msg = error.response?.data?.message || error.response?.data?.erro || 'Erro ao fazer login';
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
     }
@@ -52,10 +52,9 @@ const Login = () => {
             required
           />
           <Button type="submit" disabled={loading} className={styles.submit}>
-            {loading ? "Entrando..." : "Entrar"}
+            {loading ? 'Entrando...' : 'Entrar'}
           </Button>
         </form>
-
         <p className={styles.registerLink}>
           Não tem conta? <Link to="/cadastro">Cadastre-se</Link>
         </p>

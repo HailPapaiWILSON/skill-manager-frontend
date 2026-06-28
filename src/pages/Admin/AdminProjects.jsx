@@ -9,25 +9,15 @@ import {
 import { getTeams } from "../../api/teams";
 import { getSkills } from "../../api/skills";
 import {
-  createSkillProjeto,
-  deleteSkillProjeto,
-} from "../../api/skills-projetos"; // we need to add this API function
+  createProjectSkill,
+  deleteProjectSkill,
+} from "../../api/skills-projetos";
 import { Table } from "../../components/ui/Table";
 import { Button } from "../../components/ui/Button";
 import { Modal } from "../../components/ui/Modal";
 import { Input } from "../../components/ui/Input";
 import { useNotification } from "../../hooks/useNotification";
 import styles from "./AdminProjects.module.css";
-
-// We need to add functions for project skills association
-// Let's add them in api/projects.js? Or we'll create a separate api/skills-projetos.js
-// For simplicity, we'll add them here in a separate module.
-
-// In api/skills-projetos.js (we'll create this)
-export const createProjectSkill = (data) =>
-  apiClient.post("/skills-projetos", data);
-export const deleteProjectSkill = (projetoId, skillId) =>
-  apiClient.delete(`/skills-projetos/${projetoId}/${skillId}`);
 
 const AdminProjects = () => {
   const queryClient = useQueryClient();

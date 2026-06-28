@@ -1,20 +1,542 @@
 /* Analytics.module.css */
-.heatmapWrapper {
-  overflow-x: auto;
-  margin: 1rem 0;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
-.heatmap {
-  border-collapse: collapse;
-  font-size: 0.875rem;
-  width: 100%;
+
+.section {
+    margin-bottom: 0.5rem;
 }
-.heatmap th,
-.heatmap td {
-  border: 1px solid var(--color-border);
-  padding: 0.5rem;
-  text-align: center;
+
+.section h3 {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
 }
-.heatmap th {
-  background-color: var(--color-bg);
-  font-weight: 600;
+
+/* ======================================== */
+/* TERMÔMETRO */
+/* ======================================== */
+
+.thermometer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.thermometerStats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.thermometerMain {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.thermometerValue {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.thermometerStatus {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.thermometerDetails {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+}
+
+.thermometerDetails strong {
+    color: var(--color-text);
+}
+
+.statusGreen {
+    color: #16a34a;
+}
+
+.statusYellow {
+    color: #ca8a04;
+}
+
+.statusRed {
+    color: #dc2626;
+}
+
+.progressBarWrapper {
+    width: 100%;
+    height: 12px;
+    background-color: var(--color-bg);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progressBar {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.6s ease;
+}
+
+.progressBar.statusGreen {
+    background-color: #16a34a;
+}
+
+.progressBar.statusYellow {
+    background-color: #ca8a04;
+}
+
+.progressBar.statusRed {
+    background-color: #dc2626;
+}
+
+/* ======================================== */
+/* MISSING SKILLS */
+/* ======================================== */
+
+.missingCount {
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+}
+
+.missingCount strong {
+    color: var(--color-text);
+}
+
+.missingSkillsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+}
+
+.missingSkillCard {
+    background-color: var(--color-bg);
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    border-left: 3px solid #dc2626;
+}
+
+.missingSkillCard h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 0.95rem;
+}
+
+.missingCategory {
+    display: inline-block;
+    font-size: 0.75rem;
+    background-color: #e0e7ff;
+    color: #1e40af;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    margin-bottom: 0.5rem;
+}
+
+.missingProjects {
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+}
+
+.missingProjects ul {
+    margin: 0.25rem 0 0 0;
+    padding-left: 1rem;
+}
+
+.missingProjects li {
+    list-style-type: disc;
+}
+
+/* ======================================== */
+/* SEARCH EXPERTS */
+/* ======================================== */
+
+.searchContainer {
+    margin-bottom: 1rem;
+}
+
+.searchRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.searchGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.searchGroup label {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.searchGroup select,
+.searchGroup input {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
+    font-size: 1rem;
+}
+
+.searchActions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.expertsResult {
+    margin-top: 1rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1rem;
+}
+
+.expertsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.expertsHeader h4 {
+    margin: 0;
+}
+
+.levelBadge {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.levelsenior {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.levelpleno {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.leveljunior {
+    background-color: #e0e7ff;
+    color: #1e40af;
+}
+
+/* ======================================== */
+/* AT RISK PROJECTS */
+/* ======================================== */
+
+.riskCount {
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+}
+
+.riskCount strong {
+    color: var(--color-text);
+}
+
+.riskProjectsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 0.75rem;
+}
+
+.riskCard {
+    background-color: #fef2f2;
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    border-left: 3px solid #dc2626;
+}
+
+.riskCard h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 0.95rem;
+}
+
+.riskBadge {
+    display: inline-block;
+    background-color: #dc2626;
+    color: #fff;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.riskSkills {
+    font-size: 0.875rem;
+}
+
+.riskSkills ul {
+    margin: 0.25rem 0 0 0;
+    padding-left: 1rem;
+}
+
+.riskSkills li {
+    list-style-type: disc;
+}
+
+.riskSkills small {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--color-text-light);
+    font-size: 0.75rem;
+}
+
+/* ======================================== */
+/* TOP SKILLS */
+/* ======================================== */
+
+.topSkillsCount {
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+}
+
+.topSkillsCount strong {
+    color: var(--color-text);
+}
+
+.topSkillsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.topSkillItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    background-color: var(--color-bg);
+    border-radius: 0.375rem;
+}
+
+.topSkillRank {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.rankNumber {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    min-width: 2.5rem;
+}
+
+.skillCategory {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+    margin-left: 0.5rem;
+}
+
+.topSkillStats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+}
+
+.percentBadge {
+    display: inline-block;
+    background-color: #e0e7ff;
+    color: #1e40af;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+.topSkillBar {
+    width: 100%;
+    height: 6px;
+    background-color: #e2e8f0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.topSkillProgress {
+    height: 100%;
+    background-color: var(--color-primary);
+    border-radius: 3px;
+    transition: width 0.6s ease;
+}
+
+/* ======================================== */
+/* VERSATILITY RANKING */
+/* ======================================== */
+
+.rankingCount {
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+}
+
+.rankingCount strong {
+    color: var(--color-text);
+}
+
+.rankingList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.rankingItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--color-bg);
+    border-radius: 0.375rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.rankingPosition {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.positionNumber {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    min-width: 2.5rem;
+}
+
+.memberEmail {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+}
+
+.rankingStats {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.totalSkillsBadge {
+    display: inline-block;
+    background-color: var(--color-primary);
+    color: #fff;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+.levelDistribution {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.levelDot {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 0.0625rem 0.375rem;
+    border-radius: 9999px;
+    font-weight: 600;
+}
+
+.levelDot.senior {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.levelDot.pleno {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.levelDot.junior {
+    background-color: #e0e7ff;
+    color: #1e40af;
+}
+
+/* ======================================== */
+/* UTILITIES */
+/* ======================================== */
+
+.noData {
+    color: var(--color-text-light);
+    font-style: italic;
+    margin: 0.5rem 0;
+}
+
+.successMessage {
+    color: #16a34a;
+    font-weight: 500;
+    margin: 0.5rem 0;
+}
+
+.errorMessage {
+    color: #dc2626;
+    font-weight: 500;
+    margin: 0.5rem 0;
+}
+
+/* ======================================== */
+/* RESPONSIVE */
+/* ======================================== */
+
+@media (max-width: 768px) {
+    .searchRow {
+        grid-template-columns: 1fr;
+    }
+
+    .missingSkillsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .riskProjectsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .rankingItem {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .rankingStats {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .thermometerMain {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .thermometerDetails {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .expertsHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
 }

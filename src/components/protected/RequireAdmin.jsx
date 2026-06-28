@@ -1,10 +1,12 @@
-import { Navigate } from "react-router-dom";
+// RequireAdmin.jsx - FIXED
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
 const RequireAdmin = ({ children }) => {
-  const { user, loading, isAdmin } = useAuth();
+  const { user, isAdmin } = useAuth(); // Remove 'loading'
 
-  if (loading) return <div>Carregando...</div>;
+  // ❌ REMOVE THIS: if (loading) return <div>Carregando...</div>;
+
   if (!user || !isAdmin) return <Navigate to="/teams" replace />;
   return children;
 };

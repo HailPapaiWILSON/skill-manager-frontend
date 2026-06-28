@@ -1,6 +1,6 @@
-// index.jsx
-import React, { Suspense, lazy } from "react";
-import { useParams, useSearchParams, Outlet } from "react-router-dom";
+// src/pages/Teams/TeamDetail/index.jsx
+import React, { Suspense, lazy, startTransition } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getTeamDetails } from "../../../api/teams";
 import { Tabs } from "../../../components/ui/Tabs";
@@ -29,7 +29,10 @@ const TeamDetail = () => {
   });
 
   const handleTabChange = (tabId) => {
-    setSearchParams({ tab: tabId });
+    // ✅ Wrap in startTransition to fix the suspense error
+    startTransition(() => {
+      setSearchParams({ tab: tabId });
+    });
   };
 
   if (isLoading) return <div>Carregando...</div>;

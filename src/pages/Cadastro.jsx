@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useNotification } from "../hooks/useNotification";
-import { Input } from "../components/ui/Input";
-import { Button } from "../components/ui/Button";
-import { register } from "../api/auth";
-import styles from "./Cadastro.module.css";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useNotification } from '../hooks/useNotification';
+import { Input } from '../components/ui/Input';
+import { Button } from '../components/ui/Button';
+import { cadastrar } from '../api/autenticacao';
+import styles from './Cadastro.module.css';
 
 const Cadastro = () => {
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [codigoIngresso, setCodigoIngresso] = useState("");
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [codigoIngresso, setCodigoIngresso] = useState('');
   const [loading, setLoading] = useState(false);
   const { showToast } = useNotification();
   const navigate = useNavigate();
@@ -19,12 +19,13 @@ const Cadastro = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await register({ nome, email, senha, codigoIngresso });
-      showToast("Cadastro realizado! Faça login.", "success");
-      navigate("/login");
+      await cadastrar({ nome, email, senha, codigoIngresso });
+      showToast('Cadastro realizado! Faça login.', 'success');
+      navigate('/login');
     } catch (error) {
-      const msg = error.response?.data?.message || "Erro ao cadastrar";
-      showToast(msg, "error");
+      console.error('Erro no cadastro:', error);
+      const msg = error.response?.data?.message || error.response?.data?.erro || 'Erro ao cadastrar';
+      showToast(msg, 'error');
     } finally {
       setLoading(false);
     }
@@ -67,7 +68,7 @@ const Cadastro = () => {
             placeholder="Ex: ABC123"
           />
           <Button type="submit" disabled={loading} className={styles.submit}>
-            {loading ? "Cadastrando..." : "Cadastrar"}
+            {loading ? 'Cadastrando...' : 'Cadastrar'}
           </Button>
         </form>
         <p className={styles.loginLink}>

@@ -2,9 +2,9 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
 const RequireAuth = ({ children }) => {
-  const { user, loading } = useAuth();
+  const { user } = useAuth(); // Remove loading
 
-  if (loading) return <div>Carregando...</div>;
+  // If useAuth suspends, this won't run until data is ready
   if (!user) return <Navigate to="/login" replace />;
   return children;
 };

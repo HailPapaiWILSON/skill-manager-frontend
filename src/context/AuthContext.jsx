@@ -1,5 +1,5 @@
-import { createContext, useState, useEffect, useContext } from "react";
-import { login as apiLogin } from "../api/auth";
+import { createContext, useState, useEffect, useContext } from 'react';
+import { login as apiLogin } from '../api/autenticacao';
 
 const AuthContext = createContext(null);
 
@@ -8,12 +8,12 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem('user');
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
       } catch {
-        localStorage.removeItem("user");
+        localStorage.removeItem('user');
       }
     }
     setLoading(false);
@@ -22,21 +22,21 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, senha) => {
     const response = await apiLogin({ email, senha });
     const { usuarioSemSenha, token } = response.data;
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(usuarioSemSenha));
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(usuarioSemSenha));
     setUser(usuarioSemSenha);
     return usuarioSemSenha;
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setUser(null);
   };
 
   const value = {
     user,
-    isAdmin: user?.funcao === "administrador",
+    isAdmin: user?.funcao === 'administrador',
     loading,
     login,
     logout,
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used within AuthProvider");
+    throw new Error('useAuth must be used within AuthProvider');
   }
   return context;
 };

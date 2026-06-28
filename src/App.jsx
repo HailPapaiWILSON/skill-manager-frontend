@@ -19,6 +19,11 @@ const AdminProjects = lazy(() => import("./pages/Admin/AdminProjects"));
 const AdminSkills = lazy(() => import("./pages/Admin/AdminSkills"));
 const AdminCategories = lazy(() => import("./pages/Admin/AdminCategories"));
 
+// ✅ Create a wrapper component with Suspense
+const SuspenseWrapper = ({ children }) => (
+  <Suspense fallback={<div>Carregando...</div>}>{children}</Suspense>
+);
+
 const router = createBrowserRouter([
   {
     path: "/login",
@@ -44,13 +49,6 @@ const router = createBrowserRouter([
           {
             path: ":id",
             element: <TeamDetail />,
-            children: [
-              { index: true, element: <Navigate to="?tab=overview" replace /> },
-              // Tabs are handled inside TeamDetail via Outlet and useSearchParams
-              // We'll define child routes for each tab but we can also render them directly.
-              // For simplicity, we'll render the content inside TeamDetail based on tab.
-              // So we don't need nested routes here; we'll just use a single route and render tabs manually.
-            ],
           },
         ],
       },
@@ -74,10 +72,39 @@ const router = createBrowserRouter([
         ),
         children: [
           { index: true, element: <Navigate to="teams" replace /> },
-          { path: "teams", element: <AdminTeams /> },
-          { path: "projects", element: <AdminProjects /> },
-          { path: "skills", element: <AdminSkills /> },
-          { path: "categories", element: <AdminCategories /> },
+          // ✅ Wrap lazy-loaded components with Suspense
+          {
+            path: "teams",
+            element: (
+              <SuspenseWrapper>
+                <AdminTeams />
+              </SuspenseWrapper>
+            ),
+          },
+          {
+            path: "projects",
+            element: (
+              <SuspenseWrapper>
+                <AdminProjects />
+              </SuspenseWrapper>
+            ),
+          },
+          {
+            path: "skills",
+            element: (
+              <SuspenseWrapper>
+                <AdminSkills />
+              </SuspenseWrapper>
+            ),
+          },
+          {
+            path: "categories",
+            element: (
+              <SuspenseWrapper>
+                <AdminCategories />
+              </SuspenseWrapper>
+            ),
+          },
         ],
       },
     ],
