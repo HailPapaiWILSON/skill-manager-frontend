@@ -11,15 +11,18 @@ import {
 import { getSkills } from "../../../api/skills";
 import { Card } from "../../../components/ui/Card";
 import { Button } from "../../../components/ui/Button";
-import { Input } from "../../../components/ui/Input";
+import { SkillSelector } from "../../../components/ui/SkillSelector";
 import { Table } from "../../../components/ui/Table";
 import styles from "./Analytics.module.css";
 
 const Analytics = ({ teamId }) => {
-  const [searchSkill, setSearchSkill] = useState("");
-  const [searchSkillId, setSearchSkillId] = useState("");
+  // Estados para busca de especialistas
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [expertsResult, setExpertsResult] = useState(null);
+  const [expertsLoading, setExpertsLoading] = useState(false);
+  const [expertsError, setExpertsError] = useState(null);
 
-  // Buscar todas as skills para o dropdown
+  // Buscar todas as skills para o selector
   const skillsQuery = useQuery({
     queryKey: ["skills"],
     queryFn: getSkills,
@@ -60,27 +63,19 @@ const Analytics = ({ teamId }) => {
     enabled: !!teamId,
   });
 
-  // Buscar especialistas por skill
-  const [expertsQuery, setExpertsQuery] = useState(null);
-  const [expertsLoading, setExpertsLoading] = useState(false);
-  const [expertsResult, setExpertsResult] = useState(null);
-  const [expertsError, setExpertsError] = useState(null);
-
+  // Buscar especialistas
   const handleSearchExperts = async () => {
-    if (!searchSkillId && !searchSkill) {
+    if (selectedSkills.length === 0) {
       return;
     }
 
+    const skill = selectedSkills[0];
     setExpertsLoading(true);
     setExpertsError(null);
     setExpertsResult(null);
 
     try {
-      const response = await getSkillExperts(
-        teamId,
-        searchSkillId ? Number(searchSkillId) : undefined,
-        searchSkill || undefined,
-      );
+      const response = await getSkillExperts(teamId, skill.id, undefined);
       setExpertsResult(response.data);
     } catch (error) {
       setExpertsError(
@@ -89,6 +84,12 @@ const Analytics = ({ teamId }) => {
     } finally {
       setExpertsLoading(false);
     }
+  };
+
+  const resetExpertsSearch = () => {
+    setSelectedSkills([]);
+    setExpertsResult(null);
+    setExpertsError(null);
   };
 
   const isLoading =
@@ -110,6 +111,7 @@ const Analytics = ({ teamId }) => {
   if (isLoading) return <div>Carregando análises...</div>;
   if (error) return <div>Erro ao carregar análises</div>;
 
+  // Dados das queries
   const thermometerData = thermometerQuery.data?.data || {};
   const missingSkillsData = missingSkillsQuery.data?.data || {};
   const atRiskProjectsData = atRiskProjectsQuery.data?.data || {};
@@ -142,14 +144,6 @@ const Analytics = ({ teamId }) => {
       default:
         return "";
     }
-  };
-
-  // Reset experts search
-  const resetExpertsSearch = () => {
-    setSearchSkill("");
-    setSearchSkillId("");
-    setExpertsResult(null);
-    setExpertsError(null);
   };
 
   return (
@@ -194,7 +188,6 @@ const Analytics = ({ teamId }) => {
                 </span>
               </div>
             </div>
-            {/* Barra de progresso */}
             <div className={styles.progressBarWrapper}>
               <div
                 className={`${styles.progressBar} ${getStatusColor(thermometerData.status)}`}
@@ -252,57 +245,31 @@ const Analytics = ({ teamId }) => {
       </Card>
 
       {/* ======================================== */}
-      {/* 3. QUEM SABE O QUÊ */}
+      {/* 3. QUEM SABE O QUÊ - COM SKILL SELECTOR */}
       {/* ======================================== */}
       <Card className={styles.section}>
         <h3>🔍 Quem Sabe o Quê</h3>
         <div className={styles.searchContainer}>
-          <div className={styles.searchRow}>
-            <div className={styles.searchGroup}>
-              <label>Selecionar Skill</label>
-              <select
-                value={searchSkillId}
-                onChange={(e) => {
-                  setSearchSkillId(e.target.value);
-                  setSearchSkill("");
-                }}
-              >
-                <option value="">Selecione uma skill...</option>
-                {allSkills.map((skill) => (
-                  <option key={skill.id} value={skill.id}>
-                    {skill.nome}{" "}
-                    {skill.categoria?.nome && `(${skill.categoria.nome})`}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className={styles.searchGroup}>
-              <label>Ou buscar por nome</label>
-              <Input
-                type="text"
-                placeholder="Ex: React, Python..."
-                value={searchSkill}
-                onChange={(e) => {
-                  setSearchSkill(e.target.value);
-                  setSearchSkillId("");
-                }}
-              />
-            </div>
-          </div>
+          <SkillSelector
+            skills={allSkills}
+            selectedSkills={selectedSkills}
+            onSelect={(skill) => setSelectedSkills([skill])}
+            onRemove={() => setSelectedSkills([])}
+            label="Selecione uma skill"
+            placeholder="Buscar skill por nome..."
+          />
           <div className={styles.searchActions}>
             <Button
               onClick={handleSearchExperts}
-              disabled={!searchSkillId && !searchSkill}
+              disabled={selectedSkills.length === 0 || expertsLoading}
             >
-              Buscar Especialistas
+              {expertsLoading ? "Buscando..." : "Buscar Especialistas"}
             </Button>
             <Button variant="secondary" onClick={resetExpertsSearch}>
               Limpar
             </Button>
           </div>
         </div>
-
-        {expertsLoading && <p>Buscando especialistas...</p>}
 
         {expertsError && <p className={styles.errorMessage}>{expertsError}</p>}
 

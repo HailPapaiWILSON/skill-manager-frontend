@@ -15,7 +15,7 @@ import { Card } from "../components/ui/Card";
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
 import { Table } from "../components/ui/Table";
-import { Modal } from "../components/ui/Modal";
+import { SkillSelector } from "../components/ui/SkillSelector";
 import styles from "./Profile.module.css";
 
 const Profile = () => {
@@ -31,7 +31,7 @@ const Profile = () => {
   // Skill modal
   const [modalOpen, setModalOpen] = useState(false);
   const [editingSkill, setEditingSkill] = useState(null); // null = create
-  const [skillId, setSkillId] = useState("");
+  const [selectedSkills, setSelectedSkills] = useState([]);
   const [nivel, setNivel] = useState("junior");
   const [anosExperiencia, setAnosExperiencia] = useState(0);
 
@@ -45,7 +45,7 @@ const Profile = () => {
   // Fetch user's skills
   const userSkillsQuery = useQuery({
     queryKey: ["userSkills", user?.id],
-    queryFn: getUserSkills, // returns all; we'll filter client-side
+    queryFn: getUserSkills,
     enabled: !!user?.id,
   });
 
@@ -132,15 +132,17 @@ const Profile = () => {
 
   const handleAddSkill = () => {
     setEditingSkill(null);
-    setSkillId("");
+    setSelectedSkills([]);
     setNivel("junior");
     setAnosExperiencia(0);
     setModalOpen(true);
   };
 
   const handleEditSkill = (usuarioSkill) => {
+    const allSkills = skillsQuery.data?.data || [];
+    const skill = allSkills.find((s) => s.id === usuarioSkill.skillId);
     setEditingSkill(usuarioSkill);
-    setSkillId(usuarioSkill.skillId);
+    setSelectedSkills(skill ? [skill] : []);
     setNivel(usuarioSkill.nivel);
     setAnosExperiencia(usuarioSkill.anosExperiencia || 0);
     setModalOpen(true);
@@ -149,25 +151,33 @@ const Profile = () => {
   const closeModal = () => {
     setModalOpen(false);
     setEditingSkill(null);
-    setSkillId("");
+    setSelectedSkills([]);
     setNivel("junior");
     setAnosExperiencia(0);
   };
 
   const handleModalSubmit = () => {
-    const data = { nivel, anosExperiencia: Number(anosExperiencia) };
+    if (selectedSkills.length === 0) {
+      showToast("Selecione pelo menos uma skill", "error");
+      return;
+    }
+
+    const skill = selectedSkills[0];
+    const data = {
+      nivel,
+      anosExperiencia: Number(anosExperiencia),
+      skillId: skill.id,
+      usuarioId: user.id,
+    };
+
     if (editingSkill) {
       updateSkillMutation.mutate({
         usuarioId: user.id,
-        skillId: editingSkill.skillId,
-        data,
+        skillId: skill.id,
+        data: { nivel, anosExperiencia: Number(anosExperiencia) },
       });
     } else {
-      createSkillMutation.mutate({
-        usuarioId: user.id,
-        skillId: Number(skillId),
-        ...data,
-      });
+      createSkillMutation.mutate(data);
     }
   };
 
@@ -175,6 +185,16 @@ const Profile = () => {
     if (window.confirm("Tem certeza que deseja remover esta skill?")) {
       deleteSkillMutation.mutate({ usuarioId: user.id, skillId });
     }
+  };
+
+  // Handle skill selection for the modal
+  const handleSelectSkill = (skill) => {
+    // For modal, we only allow one skill selection (edit or create)
+    setSelectedSkills([skill]);
+  };
+
+  const handleRemoveSkill = (skillId) => {
+    setSelectedSkills(selectedSkills.filter((s) => s.id !== skillId));
   };
 
   if (
@@ -200,14 +220,6 @@ const Profile = () => {
         category: skill?.categoria?.nome,
       };
     });
-
-  // Group skills by category for dropdown
-  const groupedSkills = allSkills.reduce((acc, skill) => {
-    const cat = skill.categoria?.nome || "Sem categoria";
-    if (!acc[cat]) acc[cat] = [];
-    acc[cat].push(skill);
-    return acc;
-  }, {});
 
   return (
     <div>
@@ -250,7 +262,13 @@ const Profile = () => {
                 <tr key={us.id || `${us.usuarioId}-${us.skillId}`}>
                   <td>{us.skillName}</td>
                   <td>{us.category || "-"}</td>
-                  <td>{us.nivel}</td>
+                  <td>
+                    <span
+                      className={`${styles.levelBadge} ${styles[`level${us.nivel}`]}`}
+                    >
+                      {us.nivel}
+                    </span>
+                  </td>
                   <td>{us.anosExperiencia}</td>
                   <td>
                     <Button
@@ -276,68 +294,68 @@ const Profile = () => {
       </div>
 
       {/* Modal for adding/editing skill */}
-      <Modal
-        isOpen={modalOpen}
-        onClose={closeModal}
-        title={editingSkill ? "Editar Skill" : "Adicionar Skill"}
-        footer={
-          <>
-            <Button variant="secondary" onClick={closeModal}>
-              Cancelar
-            </Button>
-            <Button
-              onClick={handleModalSubmit}
-              disabled={
-                createSkillMutation.isLoading || updateSkillMutation.isLoading
-              }
-            >
-              {editingSkill ? "Atualizar" : "Adicionar"}
-            </Button>
-          </>
-        }
-      >
-        <div className={styles.modalBody}>
-          {!editingSkill && (
-            <div className={styles.formGroup}>
-              <label>Skill</label>
-              <select
-                value={skillId}
-                onChange={(e) => setSkillId(e.target.value)}
-                required
-              >
-                <option value="">Selecione...</option>
-                {Object.entries(groupedSkills).map(([category, skills]) => (
-                  <optgroup key={category} label={category}>
-                    {skills.map((skill) => (
-                      <option key={skill.id} value={skill.id}>
-                        {skill.nome}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
+      {modalOpen && (
+        <div className={styles.modalOverlay} onClick={closeModal}>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className={styles.modalHeader}>
+              <h3>{editingSkill ? "Editar Skill" : "Adicionar Skill"}</h3>
+              <button className={styles.modalClose} onClick={closeModal}>
+                ×
+              </button>
             </div>
-          )}
-          <div className={styles.formGroup}>
-            <label>Nível</label>
-            <select value={nivel} onChange={(e) => setNivel(e.target.value)}>
-              <option value="junior">Júnior</option>
-              <option value="pleno">Pleno</option>
-              <option value="senior">Sênior</option>
-            </select>
-          </div>
-          <div className={styles.formGroup}>
-            <label>Anos de Experiência</label>
-            <input
-              type="number"
-              value={anosExperiencia}
-              onChange={(e) => setAnosExperiencia(e.target.value)}
-              min="0"
-              step="1"
-            />
+            <div className={styles.modalBody}>
+              <SkillSelector
+                skills={allSkills}
+                selectedSkills={selectedSkills}
+                onSelect={handleSelectSkill}
+                onRemove={handleRemoveSkill}
+                label="Skill"
+                required
+              />
+
+              <div className={styles.formGroup}>
+                <label>Nível</label>
+                <select
+                  value={nivel}
+                  onChange={(e) => setNivel(e.target.value)}
+                >
+                  <option value="junior">Júnior</option>
+                  <option value="pleno">Pleno</option>
+                  <option value="senior">Sênior</option>
+                </select>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Anos de Experiência</label>
+                <input
+                  type="number"
+                  value={anosExperiencia}
+                  onChange={(e) => setAnosExperiencia(e.target.value)}
+                  min="0"
+                  step="1"
+                />
+              </div>
+            </div>
+            <div className={styles.modalFooter}>
+              <Button variant="secondary" onClick={closeModal}>
+                Cancelar
+              </Button>
+              <Button
+                onClick={handleModalSubmit}
+                disabled={
+                  createSkillMutation.isLoading ||
+                  updateSkillMutation.isLoading ||
+                  selectedSkills.length === 0
+                }
+              >
+                {editingSkill ? "Atualizar" : "Adicionar"}
+              </Button>
+            </div>
           </div>
         </div>
-      </Modal>
+      )}
     </div>
   );
 };
