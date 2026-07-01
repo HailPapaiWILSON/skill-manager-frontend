@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createPortal } from "react-dom"; // Importação do Portal para isolar o modal
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getSkills,
@@ -137,46 +138,52 @@ const AdminSkills = () => {
         )}
       />
 
-      <Modal
-        isOpen={modalOpen}
-        onClose={closeModal}
-        title={editingSkill ? "Editar Skill" : "Nova Skill"}
-        footer={
-          <>
-            <Button variant="secondary" onClick={closeModal}>
-              Cancelar
-            </Button>
-            <Button
-              onClick={handleSubmit}
-              disabled={createMutation.isLoading || updateMutation.isLoading}
-            >
-              {editingSkill ? "Atualizar" : "Criar"}
-            </Button>
-          </>
-        }
-      >
-        <Input
-          label="Nome"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          required
-        />
-        <div className={styles.formGroup}>
-          <label>Categoria</label>
-          <select
-            value={categoriaId}
-            onChange={(e) => setCategoriaId(e.target.value)}
-            required
+      {/* PORTAL DO MODAL: Garante isolamento completo na árvore DOM */}
+      {modalOpen && typeof window !== "undefined" && createPortal(
+        <div className={styles.portalWrapper}>
+          <Modal
+            isOpen={modalOpen}
+            onClose={closeModal}
+            title={editingSkill ? "Editar Skill" : "Nova Skill"}
+            footer={
+              <>
+                <Button variant="secondary" onClick={closeModal}>
+                  Cancelar
+                </Button>
+                <Button
+                  onClick={handleSubmit}
+                  disabled={createMutation.isLoading || updateMutation.isLoading}
+                >
+                  {editingSkill ? "Atualizar" : "Criar"}
+                </Button>
+              </>
+            }
           >
-            <option value="">Selecione...</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.nome}
-              </option>
-            ))}
-          </select>
-        </div>
-      </Modal>
+            <Input
+              label="Nome"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required
+            />
+            <div className={styles.formGroup}>
+              <label>Categoria</label>
+              <select
+                value={categoriaId}
+                onChange={(e) => setCategoriaId(e.target.value)}
+                required
+              >
+                <option value="">Selecione...</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.nome}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </Modal>
+        </div>,
+        document.body
+      )}
     </div>
   );
 };
