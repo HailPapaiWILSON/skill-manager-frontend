@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createPortal } from "react-dom"; 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getCategories,
@@ -99,6 +100,7 @@ const AdminCategories = () => {
         <h2>Gerenciar Categorias</h2>
         <Button onClick={openCreate}>Nova Categoria</Button>
       </div>
+      
       <Table
         columns={["ID", "Nome", "Ações"]}
         data={categories}
@@ -126,31 +128,37 @@ const AdminCategories = () => {
         )}
       />
 
-      <Modal
-        isOpen={modalOpen}
-        onClose={closeModal}
-        title={editingCategory ? "Editar Categoria" : "Nova Categoria"}
-        footer={
-          <>
-            <Button variant="secondary" onClick={closeModal}>
-              Cancelar
-            </Button>
-            <Button
-              onClick={handleSubmit}
-              disabled={createMutation.isLoading || updateMutation.isLoading}
-            >
-              {editingCategory ? "Atualizar" : "Criar"}
-            </Button>
-          </>
-        }
-      >
-        <Input
-          label="Nome"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          required
-        />
-      </Modal>
+      {/* MODAL AJUSTADO: Sem estilos inline, controlado 100% pelo arquivo CSS */}
+      {modalOpen && typeof window !== "undefined" && createPortal(
+        <div className={styles.portalWrapper}>
+          <Modal
+            isOpen={modalOpen}
+            onClose={closeModal}
+            title={editingCategory ? "Editar Categoria" : "Nova Categoria"}
+            footer={
+              <>
+                <Button variant="secondary" onClick={closeModal}>
+                  Cancelar
+                </Button>
+                <Button
+                  onClick={handleSubmit}
+                  disabled={createMutation.isLoading || updateMutation.isLoading}
+                >
+                  {editingCategory ? "Atualizar" : "Criar"}
+                </Button>
+              </>
+            }
+          >
+            <Input
+              label="Nome"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required
+            />
+          </Modal>
+        </div>,
+        document.body
+      )}
     </div>
   );
 };
