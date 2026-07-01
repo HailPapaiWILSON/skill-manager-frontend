@@ -1,12 +1,53 @@
-/* Overview.module.css */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
+/* ==========================================================================
+   index.module.css - Padrão de Engenharia de Layout Ultra-Profissional
+   ========================================================================== */
+
+/* Garante isolamento de box-model para evitar bugs de espaçamento */
+.title,
+.desc,
+.content {
+  box-sizing: border-box;
 }
-.code {
-  font-family: monospace;
-  background-color: var(--color-bg);
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
+
+.title {
+  margin-top: 0;
+  margin-bottom: 0.35rem; /* Ajuste óptico leve de espaçamento */
+  font-size: 1.75rem; /* Levemente expandido para melhor hierarquia visual */
+  font-weight: 800; /* Peso premium para títulos principais */
+  line-height: 1.2;
+  color: var(--color-text, #0f172a);
+  letter-spacing: -0.03em; /* Kerning refinado estilo SaaS moderno */
+}
+
+.desc {
+  color: var(--color-text-light, #64748b);
+  margin-top: 0;
+  margin-bottom: 2rem; /* Mais espaço para o layout respirar antes do conteúdo */
+  font-size: 0.95rem;
+  line-height: 1.6; /* Altura de linha ideal para leitura confortável (padrão WCAG) */
+  max-width: 65ch; /* Limita a largura do texto para evitar linhas exaustivas ao olho humano */
+}
+
+.content {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+/* ==========================================================================
+   OTIMIZAÇÃO DE HIERARQUIA PARA TELAS MENORES (MOBILE)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.5rem; /* Redução responsiva sutil para não quebrar linhas bruscamente */
+    letter-spacing: -0.02em;
+  }
+  
+  .desc {
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .content {
+    margin-top: 1.5rem;
+  }
 }
