@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+// Correção do Import: createPortal importado diretamente de 'react-dom'
+import { createPortal } from "react-dom"; 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getProjects,
@@ -75,9 +77,6 @@ const AdminProjects = () => {
     },
     onError: (err) => showToast(err.response?.data?.error || "Erro", "error"),
   });
-
-  // For project skills we need separate mutations, but for simplicity in admin we may not manage skills directly.
-  // We'll skip project skill management in this admin panel to keep it simple, but we can add later.
 
   const openCreate = () => {
     setEditingProject(null);
@@ -162,60 +161,66 @@ const AdminProjects = () => {
         )}
       />
 
-      <Modal
-        isOpen={modalOpen}
-        onClose={closeModal}
-        title={editingProject ? "Editar Projeto" : "Novo Projeto"}
-        footer={
-          <>
-            <Button variant="secondary" onClick={closeModal}>
-              Cancelar
-            </Button>
-            <Button
-              onClick={handleSubmit}
-              disabled={createMutation.isLoading || updateMutation.isLoading}
-            >
-              {editingProject ? "Atualizar" : "Criar"}
-            </Button>
-          </>
-        }
-      >
-        <Input
-          label="Nome"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          required
-        />
-        <Input
-          label="Descrição"
-          value={descricao}
-          onChange={(e) => setDescricao(e.target.value)}
-        />
-        <div className={styles.formGroup}>
-          <label>Status</label>
-          <select value={status} onChange={(e) => setStatus(e.target.value)}>
-            <option value="planejado">Planejado</option>
-            <option value="em_andamento">Em Andamento</option>
-            <option value="concluido">Concluído</option>
-            <option value="cancelado">Cancelado</option>
-          </select>
-        </div>
-        <div className={styles.formGroup}>
-          <label>Equipe</label>
-          <select
-            value={equipeId}
-            onChange={(e) => setEquipeId(e.target.value)}
-            required
+      {/* MODAL COM PORTAL INTEGRADO (Blindado e Estilizado via CSS Modules) */}
+      {modalOpen && typeof window !== "undefined" && createPortal(
+        <div className={styles.portalWrapper}>
+          <Modal
+            isOpen={modalOpen}
+            onClose={closeModal}
+            title={editingProject ? "Editar Projeto" : "Novo Projeto"}
+            footer={
+              <>
+                <Button variant="secondary" onClick={closeModal}>
+                  Cancelar
+                </Button>
+                <Button
+                  onClick={handleSubmit}
+                  disabled={createMutation.isLoading || updateMutation.isLoading}
+                >
+                  {editingProject ? "Atualizar" : "Criar"}
+                </Button>
+              </>
+            }
           >
-            <option value="">Selecione...</option>
-            {teams.map((team) => (
-              <option key={team.id} value={team.id}>
-                {team.nome}
-              </option>
-            ))}
-          </select>
-        </div>
-      </Modal>
+            <Input
+              label="Nome"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required
+            />
+            <Input
+              label="Descrição"
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+            />
+            <div className={styles.formGroup}>
+              <label>Status</label>
+              <select value={status} onChange={(e) => setStatus(e.target.value)}>
+                <option value="planejado">Planejado</option>
+                <option value="em_andamento">Em Andamento</option>
+                <option value="concluido">Concluído</option>
+                <option value="cancelado">Cancelado</option>
+              </select>
+            </div>
+            <div className={styles.formGroup}>
+              <label>Equipe</label>
+              <select
+                value={equipeId}
+                onChange={(e) => setEquipeId(e.target.value)}
+                required
+              >
+                <option value="">Selecione...</option>
+                {teams.map((team) => (
+                  <option key={team.id} value={team.id}>
+                    {team.nome}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </Modal>
+        </div>,
+        document.body
+      )}
     </div>
   );
 };
