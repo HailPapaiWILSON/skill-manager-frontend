@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createPortal } from "react-dom"; // Importação adicionada para isolamento
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getTeams, createTeam, updateTeam, deleteTeam } from "../../api/teams";
 import { Table } from "../../components/ui/Table";
@@ -12,7 +13,6 @@ const AdminTeams = () => {
   const queryClient = useQueryClient();
   const { showToast } = useNotification();
 
-  // State for modal
   const [modalOpen, setModalOpen] = useState(false);
   const [editingTeam, setEditingTeam] = useState(null);
   const [nome, setNome] = useState("");
@@ -104,6 +104,7 @@ const AdminTeams = () => {
         <h2>Gerenciar Equipes</h2>
         <Button onClick={openCreate}>Nova Equipe</Button>
       </div>
+      
       <Table
         columns={["ID", "Nome", "Descrição", "Código", "Ações"]}
         data={teams}
@@ -114,18 +115,10 @@ const AdminTeams = () => {
             <td>{team.descricao || "-"}</td>
             <td>{team.codigoIngresso}</td>
             <td>
-              <Button
-                variant="outline"
-                size="small"
-                onClick={() => openEdit(team)}
-              >
+              <Button variant="outline" size="small" onClick={() => openEdit(team)}>
                 Editar
               </Button>
-              <Button
-                variant="danger"
-                size="small"
-                onClick={() => handleDelete(team.id)}
-              >
+              <Button variant="danger" size="small" onClick={() => handleDelete(team.id)}>
                 Excluir
               </Button>
             </td>
@@ -133,44 +126,50 @@ const AdminTeams = () => {
         )}
       />
 
-      <Modal
-        isOpen={modalOpen}
-        onClose={closeModal}
-        title={editingTeam ? "Editar Equipe" : "Nova Equipe"}
-        footer={
-          <>
-            <Button variant="secondary" onClick={closeModal}>
-              Cancelar
-            </Button>
-            <Button
-              onClick={handleSubmit}
-              disabled={createMutation.isLoading || updateMutation.isLoading}
-            >
-              {editingTeam ? "Atualizar" : "Criar"}
-            </Button>
-          </>
-        }
-      >
-        <Input
-          label="Nome"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          required
-        />
-        <Input
-          label="Descrição"
-          value={descricao}
-          onChange={(e) => setDescricao(e.target.value)}
-        />
-        {!editingTeam && (
-          <Input
-            label="Código de Ingresso (opcional)"
-            value={codigoIngresso}
-            onChange={(e) => setCodigoIngresso(e.target.value)}
-            placeholder="Deixe em branco para gerar automaticamente"
-          />
-        )}
-      </Modal>
+      {/* PORTAL DO MODAL: Blindagem e centralização baseada em AdminProjects */}
+      {modalOpen && typeof window !== "undefined" && createPortal(
+        <div className={styles.portalWrapper}>
+          <Modal
+            isOpen={modalOpen}
+            onClose={closeModal}
+            title={editingTeam ? "Editar Equipe" : "Nova Equipe"}
+            footer={
+              <>
+                <Button variant="secondary" onClick={closeModal}>
+                  Cancelar
+                </Button>
+                <Button
+                  onClick={handleSubmit}
+                  disabled={createMutation.isLoading || updateMutation.isLoading}
+                >
+                  {editingTeam ? "Atualizar" : "Criar"}
+                </Button>
+              </>
+            }
+          >
+            <Input
+              label="Nome"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required
+            />
+            <Input
+              label="Descrição"
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+            />
+            {!editingTeam && (
+              <Input
+                label="Código de Ingresso (opcional)"
+                value={codigoIngresso}
+                onChange={(e) => setCodigoIngresso(e.target.value)}
+                placeholder="Deixe em branco para gerar automaticamente"
+              />
+            )}
+          </Modal>
+        </div>,
+        document.body
+      )}
     </div>
   );
 };
