@@ -1,26 +1,28 @@
+/* ==========================================================================
+   LAYOUT COMPONENTS (Header & Tables)
+   ========================================================================== */
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.75rem;
-  padding: 1.5rem;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  padding: 1.5rem 2rem;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 18px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-  transition: all 0.25s ease;
+  border-radius: 14px;
+  box-shadow: 
+    0 10px 30px -10px rgba(0, 0, 0, 0.04),
+    0 4px 12px -5px rgba(0, 0, 0, 0.02);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08);
-}
-
-.headerContent {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  box-shadow: 
+    0 20px 35px -10px rgba(0, 0, 0, 0.07),
+    0 6px 15px -4px rgba(0, 0, 0, 0.03);
 }
 
 .header h2 {
@@ -31,56 +33,149 @@
   letter-spacing: -0.02em;
 }
 
-.subtitle {
-  margin: 0;
-  color: var(--color-text-light);
-  font-size: 0.95rem;
-  line-height: 1.4;
-}
-
 .tableContainer {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 18px;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-  transition: all 0.25s ease;
+  box-shadow: 
+    0 12px 30px -10px rgba(0, 0, 0, 0.04),
+    0 4px 12px -5px rgba(0, 0, 0, 0.02);
 }
 
-.tableContainer:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08);
-}
+/* ==========================================================================
+   BUTTONS & ACTIONS
+   ========================================================================== */
 
 .actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
+  align-items: center;
 }
 
-/* Botões consistentes com padrão do design */
 .actions button {
-  border-radius: 10px;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
 }
 
 .actions button:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 1.25rem;
+.actions button:active {
+  transform: scale(0.96);
+}
+
+.actions button:focus-visible,
+.modalFooter button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+/* ==========================================================================
+   WIDE CINEMATIC MODAL (Bloco mais largo + Fundo ultra desfocado)
+   ========================================================================== */
+
+/* Container de fundo com efeito ultra glassmorphism */
+.portalWrapper {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 99999 !important;
+  
+  /* Reduzido o tom escuro para o desfoque pesado brilhar sozinho */
+  background: rgba(15, 23, 42, 0.45) !important; 
+  
+  /* ULTRA DESFOQUE: Aumentado de 4px para 16px para um efeito jateado profundo */
+  backdrop-filter: blur(2px) !important; 
+  -webkit-backdrop-filter: blur(16px) !important;
+  
+  animation: backdropFadeIn 0.3s ease-out forwards !important;
+}
+
+/* Limpeza de possíveis conflitos do componente nativo */
+.portalWrapper > div,
+.portalWrapper :global([class*="overlay"]),
+.portalWrapper :global([class*="backdrop"]),
+.portalWrapper :global([class*="modalBackground"]) {
+  background: transparent !important;
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+/* Estilização e expansão do bloco do formulário */
+.portalWrapper :global(.modal),
+.portalWrapper :global([class*="content"]),
+.portalWrapper > div > div {
+  background: var(--color-surface, #dfd5d5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important; /* Borda sutil reflexiva */
+  border-radius: 20px !important; /* Cantos ligeiramente mais arredondados para combinar com a largura */
+  padding: 3rem !important; /* Máximo conforto e espaço interno */
+  
+  /* BLOCO MAIS LARGO: Expandido para 680px */
+  width: 100% !important;
+  max-width: 680px !important; 
+  
+  /* Sombra suave e tridimensional de alta dispersão */
+  box-shadow: 
+    0 30px 70px -10px rgba(0, 0, 0, 0.2),
+    0 15px 30px -15px rgba(0, 0, 0, 0.15) !important;
+  
+  /* Animação suave com escala quase imperceptível */
+  animation: modalCinemaIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  transform-origin: center !important;
+}
+
+/* Tratamento Mobile (Transforma em bottom-sheet) */
+@media (max-width: 576px) {
+  .portalWrapper {
+    align-items: flex-end !important;
   }
 
-  .actions {
-    width: 100%;
-    flex-direction: column;
+  .portalWrapper :global(.modal),
+  .portalWrapper :global([class*="content"]),
+  .portalWrapper > div > div {
+    max-width: 100% !important;
+    border-radius: 24px 24px 0 0 !important;
+    padding: 2rem !important;
+    animation: modalMobileSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
   }
+}
 
-  .actions button {
-    width: 100%;
+/* ==========================================================================
+   ANIMAÇÕES CINEMATOGRÁFICAS
+   ========================================================================== */
+
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalCinemaIn {
+  from {
+    transform: scale(0.98) translateY(12px);
+    opacity: 0;
   }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes modalMobileSlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
