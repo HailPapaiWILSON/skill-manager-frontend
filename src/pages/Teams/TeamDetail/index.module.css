@@ -1,44 +1,53 @@
 /* ==========================================================================
-   Overview.module.css - Engenharia de Componentes de Alta Performance
+   index.module.css - Padrão de Engenharia de Layout Ultra-Profissional
    ========================================================================== */
 
-/* Isolamento completo do box-model contra bugs de colisão de margens */
-.grid,
-.code {
+/* Garante isolamento de box-model para evitar bugs de espaçamento */
+.title,
+.desc,
+.content {
   box-sizing: border-box;
 }
 
-/* Grid Inteligente e Auto-Responsivo */
-.grid {
-  display: grid;
-  /* minmax ajustado para 200px evita que o conteúdo esprema e quebre o layout */
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1.25rem; /* Espaçamento levemente expandido para melhor simetria */
+.title {
+  margin-top: 0;
+  margin-bottom: 0.35rem; /* Ajuste óptico leve de espaçamento */
+  font-size: 1.75rem; /* Levemente expandido para melhor hierarquia visual */
+  font-weight: 800; /* Peso premium para títulos principais */
+  line-height: 1.2;
+  color: var(--color-text, #0f172a);
+  letter-spacing: -0.03em; /* Kerning refinado estilo SaaS moderno */
+}
+
+.desc {
+  color: var(--color-text-light, #64748b);
+  margin-top: 0;
+  margin-bottom: 2rem; /* Mais espaço para o layout respirar antes do conteúdo */
+  font-size: 0.95rem;
+  line-height: 1.6; /* Altura de linha ideal para leitura confortável (padrão WCAG) */
+  max-width: 65ch; /* Limita a largura do texto para evitar linhas exaustivas ao olho humano */
+}
+
+.content {
+  margin-top: 2rem;
   width: 100%;
 }
 
-/* Bloco de Código Inline Estilo Documentação Premium (GitHub/Vercel) */
-.code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 
-               "Liberation Mono", "Courier New", monospace;
-  font-size: 0.85rem; /* Ajuste óptico: fontes mono naturalmente parecem maiores */
-  font-weight: 500;
-  color: var(--color-text, #0f172a);
-  background-color: var(--color-bg, #f8fafc);
-  border: 1px solid var(--color-border, #e2e8f0);
-  border-radius: 6px; /* Bordas menores em elementos de texto preservam a nitidez */
-  padding: 0.2rem 0.4rem;
-  white-space: nowrap; /* Previne que tokens ou comandos quebrem no meio da palavra */
-  word-break: break-all;
-}
-
 /* ==========================================================================
-   ADAPTAÇÃO REVOLUCIONÁRIA PARA MOBILE
+   OTIMIZAÇÃO DE HIERARQUIA PARA TELAS MENORES (MOBILE)
    ========================================================================== */
-@media (max-width: 480px) {
-  .grid {
-    /* Em telas ultra-pequenas, força 1 coluna cheia para evitar esmagamento lateral */
-    grid-template-columns: 1fr; 
-    gap: 1rem;
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.5rem; /* Redução responsiva sutil para não quebrar linhas bruscamente */
+    letter-spacing: -0.02em;
+  }
+  
+  .desc {
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .content {
+    margin-top: 1.5rem;
   }
 }
