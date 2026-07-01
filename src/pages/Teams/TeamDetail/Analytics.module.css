@@ -1,561 +1,517 @@
-/* Analytics.module.css */
-
-.container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+/* ==========================================================================
+   DESIGN SYSTEM DESIGN TOKENS (Variáveis Semânticas para Manutenção)
+   ========================================================================== */
+:root {
+  --ana-space-xs: 0.5rem;    /* 8px */
+  --ana-space-sm: 0.75rem;   /* 12px */
+  --ana-space-md: 1rem;      /* 16px */
+  --ana-space-lg: 1.5rem;    /* 24px */
+  --ana-space-xl: 2rem;      /* 32px */
+  
+  --ana-radius-sm: 6px;
+  --ana-radius-md: 10px;
+  --ana-radius-lg: 16px;
+  
+  --ana-transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ==========================================================================
+   ESTRUTURA E LAYOUT PRINCIPAL
+   ========================================================================== */
+
+/* Garante isolamento de box-model para evitar que paddings quebrem larguras */
+.container,
+.container *,
+.container *::before,
+.container *::after {
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ana-space-xl);
+  width: 100%;
+}
+
+/* Painel de Seção (Card Elevado de Forma Sutil) */
 .section {
-    margin-bottom: 0.5rem;
+  background: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: var(--ana-radius-lg);
+  padding: var(--ana-space-lg);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 
+              0 4px 12px 0 rgba(15, 23, 42, 0.015);
+  transition: var(--ana-transition-smooth);
+}
+
+.section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 
+              0 12px 24px -4px rgba(15, 23, 42, 0.04);
 }
 
 .section h3 {
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
+  margin: 0 0 var(--ana-space-lg) 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--color-text, #0f172a);
+  letter-spacing: -0.02em;
 }
 
-/* ======================================== */
-/* TERMÔMETRO */
-/* ======================================== */
+/* ==========================================================================
+   MÓDULO 1: TERMÔMETRO DE MÉTRICAS (Métricas de Engajamento)
+   ========================================================================== */
 
 .thermometer {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ana-space-md);
 }
 
 .thermometerStats {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ana-space-xs);
 }
 
 .thermometerMain {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: baseline;
+  gap: var(--ana-space-sm);
+  flex-wrap: wrap;
 }
 
 .thermometerValue {
-    font-size: 2.5rem;
-    font-weight: 700;
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-text, #0f172a);
 }
 
 .thermometerStatus {
-    font-size: 1rem;
-    font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .thermometerDetails {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    font-size: 0.875rem;
-    color: var(--color-text-light);
+  display: flex;
+  gap: var(--ana-space-lg);
+  flex-wrap: wrap;
+  font-size: 0.875rem;
+  color: var(--color-text-light, #64748b);
+  border-top: 1px solid var(--color-border, #e2e8f0);
+  padding-top: var(--ana-space-md);
 }
 
 .thermometerDetails strong {
-    color: var(--color-text);
+  color: var(--color-text, #0f172a);
+  font-weight: 600;
 }
 
-.statusGreen {
-    color: #16a34a;
-}
-
-.statusYellow {
-    color: #ca8a04;
-}
-
-.statusRed {
-    color: #dc2626;
-}
+/* Cores Semânticas com Alto Contraste (Acessibilidade WCAG AA) */
+.statusGreen { color: #15803d; }
+.statusYellow { color: #a16207; }
+.statusRed { color: #b91c1c; }
 
 .progressBarWrapper {
-    width: 100%;
-    height: 12px;
-    background-color: var(--color-bg);
-    border-radius: 6px;
-    overflow: hidden;
+  width: 100%;
+  height: 8px;
+  background-color: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
 }
 
 .progressBar {
-    height: 100%;
-    border-radius: 6px;
-    transition: width 0.6s ease;
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.progressBar.statusGreen {
-    background-color: #16a34a;
+.progressBar.statusGreen { background-color: #4ade80; }
+.progressBar.statusYellow { background-color: #facc15; }
+.progressBar.statusRed { background-color: #f87171; }
+
+/* ==========================================================================
+   MÓDULO 2: GRIDS DE ALERTAS (Missing Skills / Risk Projects)
+   ========================================================================== */
+
+.missingCount,
+.riskCount,
+.topSkillsCount,
+.rankingCount {
+  margin: 0 0 var(--ana-space-md) 0;
+  font-size: 0.875rem;
+  color: var(--color-text-light, #64748b);
 }
 
-.progressBar.statusYellow {
-    background-color: #ca8a04;
+.missingCount strong,
+.riskCount strong,
+.topSkillsCount strong,
+.rankingCount strong {
+  color: var(--color-text, #0f172a);
+  font-weight: 600;
 }
 
-.progressBar.statusRed {
-    background-color: #dc2626;
+.missingSkillsGrid,
+.riskProjectsGrid {
+  display: grid;
+  gap: var(--ana-space-md);
+  width: 100%;
 }
 
-/* ======================================== */
-/* MISSING SKILLS */
-/* ======================================== */
+/* Grids fluidos auto-ajustáveis baseados no espaço do container pai */
+.missingSkillsGrid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.riskProjectsGrid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
 
-.missingCount {
-    margin-bottom: 1rem;
-    font-size: 0.875rem;
-    color: var(--color-text-light);
+.missingSkillCard,
+.riskCard {
+  padding: var(--ana-space-lg);
+  border-radius: var(--ana-radius-md);
+  border: 1px solid var(--color-border, #e2e8f0);
+  background-color: var(--color-surface, #ffffff);
+  transition: var(--ana-transition-smooth);
 }
 
-.missingCount strong {
-    color: var(--color-text);
+.missingSkillCard { border-left: 4px solid #f87171; }
+.riskCard { background-color: #fffbfe; border-left: 4px solid #dc2626; }
+
+.missingSkillCard:hover,
+.riskCard:hover {
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
 }
 
-.missingSkillsGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 0.75rem;
+.missingSkillCard h4,
+.riskCard h4 {
+  margin: 0 0 var(--ana-space-xs) 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-text, #0f172a);
 }
 
-.missingSkillCard {
-    background-color: var(--color-bg);
-    padding: 0.75rem;
-    border-radius: 0.375rem;
-    border-left: 3px solid #dc2626;
+.missingCategory,
+.riskBadge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--ana-radius-sm);
+  margin-bottom: var(--ana-space-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.missingSkillCard h4 {
-    margin: 0 0 0.25rem 0;
-    font-size: 0.95rem;
+.missingCategory { background-color: #eff6ff; color: #1e40af; }
+.riskBadge { background-color: #fef2f2; color: #991b1b; }
+
+.missingProjects,
+.riskSkills {
+  font-size: 0.85rem;
+  color: #475569;
+  line-height: 1.5;
 }
 
-.missingCategory {
-    display: inline-block;
-    font-size: 0.75rem;
-    background-color: #e0e7ff;
-    color: #1e40af;
-    padding: 0.125rem 0.5rem;
-    border-radius: 9999px;
-    margin-bottom: 0.5rem;
+.missingProjects ul,
+.riskSkills ul {
+  margin: var(--ana-space-xs) 0 0 0;
+  padding-left: 1.25rem;
 }
 
-.missingProjects {
-    font-size: 0.75rem;
-    color: var(--color-text-light);
+.missingProjects li,
+.riskSkills li {
+  margin-bottom: 0.25rem;
 }
 
-.missingProjects ul {
-    margin: 0.25rem 0 0 0;
-    padding-left: 1rem;
-}
-
-.missingProjects li {
-    list-style-type: disc;
-}
-
-/* ======================================== */
-/* SEARCH EXPERTS */
-/* ======================================== */
+/* ==========================================================================
+   MÓDULO 3: COMPONENTE DE BUSCA (Filtros e Controles)
+   ========================================================================== */
 
 .searchContainer {
-    margin-bottom: 1rem;
+  margin-bottom: var(--ana-space-md);
 }
 
 .searchRow {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--ana-space-md);
 }
 
 .searchGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ana-space-xs);
 }
 
 .searchGroup label {
-    font-size: 0.875rem;
-    font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
 }
 
 .searchGroup select,
 .searchGroup input {
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--color-border);
-    border-radius: 0.375rem;
-    font-size: 1rem;
+  height: 42px;
+  width: 100%;
+  padding: 0 var(--ana-space-md);
+  border-radius: var(--ana-radius-md);
+  border: 1px solid var(--color-border, #e2e8f0);
+  background: var(--color-surface, #ffffff);
+  font-size: 0.9rem;
+  color: var(--color-text, #0f172a);
+  transition: var(--ana-transition-smooth);
+}
+
+.searchGroup select:hover,
+.searchGroup input:hover {
+  border-color: #cbd5e1;
+}
+
+.searchGroup select:focus,
+.searchGroup input:focus {
+  outline: none;
+  border-color: var(--color-primary, #2563eb);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
 }
 
 .searchActions {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+  display: flex;
+  gap: var(--ana-space-xs);
+  flex-wrap: wrap;
+  margin-top: var(--ana-space-md);
 }
 
 .expertsResult {
-    margin-top: 1rem;
-    border-top: 1px solid var(--color-border);
-    padding-top: 1rem;
+  margin-top: var(--ana-space-lg);
+  border-top: 1px solid var(--color-border, #e2e8f0);
+  padding-top: var(--ana-space-lg);
 }
 
 .expertsHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.75rem;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--ana-space-md);
+  gap: var(--ana-space-md);
+  flex-wrap: wrap;
 }
 
 .expertsHeader h4 {
-    margin: 0;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
+/* Badges Globais de Nível */
 .levelBadge {
-    display: inline-block;
-    padding: 0.125rem 0.5rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
-.levelsenior {
-    background-color: #dcfce7;
-    color: #166534;
+.levelsenior { background-color: #dcfce7; color: #156534; }
+.levelpleno { background-color: #fef3c7; color: #92400e; }
+.leveljunior { background-color: #e0e7ff; color: #1e40af; }
+
+/* ==========================================================================
+   MÓDULO 4: RANKINGS (Linhas Unificadas estilo Dashboard Corporativo)
+   ========================================================================== */
+
+.topSkillsList,
+.rankingList {
+  display: flex;
+  flex-direction: column;
 }
 
-.levelpleno {
-    background-color: #fef3c7;
-    color: #92400e;
+.topSkillItem,
+.rankingItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ana-space-sm);
+  padding: var(--ana-space-md) 0;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-.leveljunior {
-    background-color: #e0e7ff;
-    color: #1e40af;
+.topSkillItem:first-child,
+.rankingItem:first-child { padding-top: 0; }
+.topSkillItem:last-child,
+.rankingItem:last-child { border-bottom: none; padding-bottom: 0; }
+
+.topSkillRank,
+.rankingPosition {
+  display: flex;
+  align-items: center;
+  gap: var(--ana-space-md);
+  min-width: 0; /* Previne estouro de layout em Flexbox */
 }
 
-/* ======================================== */
-/* AT RISK PROJECTS */
-/* ======================================== */
-
-.riskCount {
-    margin-bottom: 1rem;
-    font-size: 0.875rem;
-    color: var(--color-text-light);
-}
-
-.riskCount strong {
-    color: var(--color-text);
-}
-
-.riskProjectsGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 0.75rem;
-}
-
-.riskCard {
-    background-color: #fef2f2;
-    padding: 0.75rem;
-    border-radius: 0.375rem;
-    border-left: 3px solid #dc2626;
-}
-
-.riskCard h4 {
-    margin: 0 0 0.25rem 0;
-    font-size: 0.95rem;
-}
-
-.riskBadge {
-    display: inline-block;
-    background-color: #dc2626;
-    color: #fff;
-    padding: 0.125rem 0.5rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
-.riskSkills {
-    font-size: 0.875rem;
-}
-
-.riskSkills ul {
-    margin: 0.25rem 0 0 0;
-    padding-left: 1rem;
-}
-
-.riskSkills li {
-    list-style-type: disc;
-}
-
-.riskSkills small {
-    display: block;
-    margin-top: 0.25rem;
-    color: var(--color-text-light);
-    font-size: 0.75rem;
-}
-
-/* ======================================== */
-/* TOP SKILLS */
-/* ======================================== */
-
-.topSkillsCount {
-    margin-bottom: 1rem;
-    font-size: 0.875rem;
-    color: var(--color-text-light);
-}
-
-.topSkillsCount strong {
-    color: var(--color-text);
-}
-
-.topSkillsList {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.topSkillItem {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    padding: 0.5rem;
-    background-color: var(--color-bg);
-    border-radius: 0.375rem;
-}
-
-.topSkillRank {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.rankNumber {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-primary);
-    min-width: 2.5rem;
+.rankNumber,
+.positionNumber {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-primary, #2563eb);
+  min-width: 1.5rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .skillCategory {
-    display: inline-block;
-    font-size: 0.75rem;
-    color: var(--color-text-light);
-    margin-left: 0.5rem;
+  font-size: 0.75rem;
+  color: #475569;
+  background: #f1f5f9;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--ana-radius-sm);
+  font-weight: 600;
 }
 
 .topSkillStats {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.875rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
 }
 
 .percentBadge {
-    display: inline-block;
-    background-color: #e0e7ff;
-    color: #1e40af;
-    padding: 0.125rem 0.5rem;
-    border-radius: 9999px;
-    font-weight: 600;
-    font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text, #0f172a);
 }
 
 .topSkillBar {
-    width: 100%;
-    height: 6px;
-    background-color: #e2e8f0;
-    border-radius: 3px;
-    overflow: hidden;
+  width: 100%;
+  height: 6px;
+  background-color: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
 }
 
 .topSkillProgress {
-    height: 100%;
-    background-color: var(--color-primary);
-    border-radius: 3px;
-    transition: width 0.6s ease;
+  height: 100%;
+  background-color: var(--color-primary, #2563eb);
+  border-radius: 999px;
 }
 
-/* ======================================== */
-/* VERSATILITY RANKING */
-/* ======================================== */
-
-.rankingCount {
-    margin-bottom: 1rem;
-    font-size: 0.875rem;
-    color: var(--color-text-light);
-}
-
-.rankingCount strong {
-    color: var(--color-text);
-}
-
-.rankingList {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
+/* Grid de Usuários (Ranking de Versatilidade) */
 .rankingItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0.75rem;
-    background-color: var(--color-bg);
-    border-radius: 0.375rem;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.rankingPosition {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.positionNumber {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--color-primary);
-    min-width: 2.5rem;
+/* Garante comportamento elástico para e-mails gigantescos */
+.rankingPosition > div {
+  min-width: 0;
 }
 
 .memberEmail {
-    display: block;
-    font-size: 0.75rem;
-    color: var(--color-text-light);
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Corta o email com '...' se for absurdamente grande */
 }
 
 .rankingStats {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  gap: var(--ana-space-md);
 }
 
 .totalSkillsBadge {
-    display: inline-block;
-    background-color: var(--color-primary);
-    color: #fff;
-    padding: 0.125rem 0.5rem;
-    border-radius: 9999px;
-    font-weight: 600;
-    font-size: 0.75rem;
+  background-color: #eff6ff;
+  color: #1e40af;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.75rem;
 }
 
 .levelDistribution {
-    display: flex;
-    gap: 0.5rem;
+  display: flex;
+  gap: var(--ana-space-xs);
 }
 
 .levelDot {
-    display: inline-block;
-    font-size: 0.7rem;
-    padding: 0.0625rem 0.375rem;
-    border-radius: 9999px;
-    font-weight: 600;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--ana-radius-sm);
+  font-weight: 700;
 }
 
-.levelsenior {
-    background-color: #dce8e0;  /* Cool sage */
-    color: #2d5a4a;
-}
-.levelpleno {
-    background-color: #e8e0cc;  /* Cool cream */
-    color: #7a6a3a;
-}
-.leveljunior {
-    background-color: #e0e4e8;  /* Cool fog */
-    color: #3a4a5a;
-}
+/* Dots Estilo Pastel de Interface Limpa */
+.levelDot.levelsenior { background-color: #e2f0e7; color: #15803d; }
+.levelDot.levelpleno { background-color: #fff8e6; color: #a16207; }
+.levelDot.leveljunior { background-color: #eff6ff; color: #1d4ed8; }
 
-/* Status indicators - Pastel */
-.statusGreen {
-    color: #5a8a72;
-}
-.statusYellow {
-    color: #b8a050;
-}
-.statusRed {
-    color: #c87870;
-}
-
-.progressBar.statusGreen {
-    background-color: #a8c8b8;
-}
-.progressBar.statusYellow {
-    background-color: #d8c888;
-}
-.progressBar.statusRed {
-    background-color: #e0a8a0;
-}
-
-/* ======================================== */
-/* UTILITIES */
-/* ======================================== */
+/* ==========================================================================
+   UTILITÁRIOS E FEEDBACKS DE ESTADO (ALERTAS DE SISTEMA)
+   ========================================================================== */
 
 .noData {
-    color: var(--color-text-light);
-    font-style: italic;
-    margin: 0.5rem 0;
+  color: #64748b;
+  font-style: italic;
+  padding: var(--ana-space-xl) 0;
+  text-align: center;
+  font-size: 0.9rem;
 }
 
-.successMessage {
-    color: #16a34a;
-    font-weight: 500;
-    margin: 0.5rem 0;
-}
-
+.successMessage,
 .errorMessage {
-    color: #dc2626;
-    font-weight: 500;
-    margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: var(--ana-space-xs);
+  padding: var(--ana-space-sm) var(--ana-space-md);
+  border-radius: var(--ana-radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: var(--ana-space-sm) 0;
 }
 
-/* ======================================== */
-/* RESPONSIVE */
-/* ======================================== */
+.successMessage { background-color: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+.errorMessage { background-color: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
+
+/* ==========================================================================
+   RESPONSIVIDADE E ADAPTAÇÃO MOBILE (SEGURO E SELECIONADO)
+   ========================================================================== */
 
 @media (max-width: 768px) {
-    .searchRow {
-        grid-template-columns: 1fr;
-    }
+  .section {
+    padding: var(--ana-space-md);
+  }
 
-    .missingSkillsGrid {
-        grid-template-columns: 1fr;
-    }
+  .rankingItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ana-space-sm);
+  }
 
-    .riskProjectsGrid {
-        grid-template-columns: 1fr;
-    }
+  .rankingStats {
+    width: 100%;
+    justify-content: space-between;
+    border-top: 1px solid #f1f5f9;
+    padding-top: var(--ana-space-sm);
+  }
 
-    .rankingItem {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  .thermometerMain {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ana-space-xs);
+  }
 
-    .rankingStats {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .thermometerMain {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .thermometerDetails {
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-
-    .expertsHeader {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.25rem;
-    }
+  .thermometerDetails {
+    flex-direction: column;
+    gap: var(--ana-space-xs);
+  }
 }
